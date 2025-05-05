@@ -1,4 +1,5 @@
 ﻿using InsightHub.ArticleFetcher.Models;
+using InsightHub.ArticleFetcher.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,39 +9,22 @@ namespace InsightHub.ArticleFetcher.Controllers
     [ApiController]
     public class ArticleController : ControllerBase
     {
+        private readonly UnpaywallService _unpaywallService;
+
+        public ArticleController(UnpaywallService unpaywallService)
+        {
+            _unpaywallService = unpaywallService;
+        }
+
         [HttpGet("search")]
-        public ActionResult<List<ArticleDto>> Search([FromQuery] string query)
+        public async Task<ActionResult<string>> Search([FromQuery]  string query)
         {
             if (string.IsNullOrWhiteSpace(query))
-            {
-                return BadRequest("Query parameter is required.");
-            }
+                return BadRequest("Query is required");
 
-            // For testing purpose, return heardcoded list.
-            var results = new List<ArticleDto>
-            {
-                new ArticleDto
-                {
-                    Title = "Cilmate Change and teh Arctic",
-                    Author = "Dr. Jane Smith",
-                    Year = 2023,
-                    Publisher = "Nature",
-                    Doi = "10.1234/exampledoi1",
-                    Url = "https://example.com/article1"
-                },
-                new ArticleDto
-                {
-                    Title = "Global Warming Trends",
-                    Author = "Prof. John Doe",
-                    Year = 2022,
-                    Publisher = "ScienceDirect",
-                    Doi = "10.5678/exampledoi2",
-                    Url = "https://example.com/article2"
+            var result = await _unpaywallService.GetRawArticlesAsync(query);
 
-                }
-            };
-
-            return Ok(results);
+            return Ok(result);
         }
     }
 }
