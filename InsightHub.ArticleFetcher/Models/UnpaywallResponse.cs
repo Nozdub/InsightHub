@@ -25,6 +25,9 @@ namespace InsightHub.ArticleFetcher.Models
 
         [JsonPropertyName("best_oa_location")]
         public BestOALocation BestOALocation { get; set; }
+
+        [JsonPropertyName("journal_name")]
+        public string JournalName { get; set; }
     }
 
     public class Author
@@ -40,6 +43,15 @@ namespace InsightHub.ArticleFetcher.Models
     {
         [JsonPropertyName("url_for_pdf")]
         public string UrlForPdf { get; set; }
+
+        [JsonPropertyName("version")]
+        public string Version { get; set; }
+
+        [JsonPropertyName("license")]
+        public string License { get; set; }
+
+        [JsonPropertyName("host_type")]
+        public string HostType { get; set; }
 
     }
 }
