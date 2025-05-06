@@ -2,6 +2,7 @@
 using InsightHub.ArticleFetcher.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Web;
 
 namespace InsightHub.ArticleFetcher.Controllers
 {
@@ -26,6 +27,24 @@ namespace InsightHub.ArticleFetcher.Controllers
 
             if (result == null)
                 return NotFound("No article found or failed to fetch.");
+
+            return Ok(result);
+        }
+
+        [HttpGet("{doi}")]
+        public async Task<ActionResult<DetailedArticleDto>> GetByDoi(string doi)
+        {
+      
+
+            if (string.IsNullOrWhiteSpace(doi))
+                return BadRequest("DOI  is required");
+
+            var decodeDoi = HttpUtility.UrlDecode(doi);
+
+            var result = await _unpaywallService.GetArticleByDoiAsync(decodeDoi);
+
+            if (result == null)
+                return NotFound($"No article found for DOI: {doi}");
 
             return Ok(result);
         }

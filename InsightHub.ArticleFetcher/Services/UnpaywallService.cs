@@ -52,5 +52,44 @@ namespace InsightHub.ArticleFetcher.Services
             return dto;
         }
 
+        public async Task<DetailedArticleDto> GetArticleByDoiAsync(string doi)
+        {
+
+            var url = $"https://api.unpaywall.org/v2/{doi}?email=mytrados@gmail.com";
+            Console.WriteLine($"Fetching detailed article for DOI: {doi}");
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine($"Failed to fetch: {response.StatusCode}");
+                return null;
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var article = JsonSerializer.Deserialize<UnpaywallResponse>(content);
+
+            if (article == null)
+                return null;
+
+            var dto = new DetailedArticleDto
+            {
+                Title = article.Title,
+                Year = article.Year,
+                Publisher = article.Publisher,
+                Doi = article.Doi,
+                JournalName = article.JournalName,
+                LandingPageUrl = article.LandingPageUrl,
+                PdfUrl = article.BestOALocation?.UrlForPdf,
+                Version = article.BestOALocation?.Version,
+                License = article.BestOALocation?.License,
+                HostType = article.BestOALocation?.HostType,
+                Authors = article.Authors?.Select(a => $"{a.Given} {a.Family}").ToList()
+
+            };
+
+            return dto;
+        }
+
     }
 }
