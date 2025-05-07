@@ -53,5 +53,7 @@ namespace InsightHub.ArticleFetcher.Models
         [JsonPropertyName("host_type")]
         public string HostType { get; set; }
 
+        public string UrlForLandingPage { get; set; }
+
     }
 }

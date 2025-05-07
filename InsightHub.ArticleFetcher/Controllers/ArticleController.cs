@@ -89,5 +89,19 @@ namespace InsightHub.ArticleFetcher.Controllers
             return Ok(results);
         }
 
+        [HttpGet("crossref/full")]
+        public async Task<ActionResult<List<CrossRefDto>>> CrossRefWithUnpaywall([FromQuery] string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return BadRequest("Query is required");
+
+            var results = await _crossRefService.SearchAndEnrichWithUnpaywallAsync(query);
+
+            if (!results.Any())
+                return NotFound("No results from CrossRef or Unpaywall.");
+
+            return Ok(results);
+        }
+
     }
 }
