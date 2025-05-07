@@ -17,6 +17,16 @@ namespace InsightHub.ArticleFetcher
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpClient<UnpaywallService>();
             builder.Services.AddSingleton<LocalArticleIndex>();
+            builder.Services.AddHttpClient<CrossRefService>();
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
 
 
             var app = builder.Build();
@@ -29,6 +39,8 @@ namespace InsightHub.ArticleFetcher
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
