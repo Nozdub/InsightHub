@@ -12,11 +12,13 @@ namespace InsightHub.ArticleFetcher.Controllers
     {
         private readonly UnpaywallService _unpaywallService;
         private readonly LocalArticleIndex _localIndex;
+        private readonly CrossRefService _crossRefService;
 
-        public ArticleController(UnpaywallService unpaywallService, LocalArticleIndex localIndex)
+        public ArticleController(UnpaywallService unpaywallService, LocalArticleIndex localIndex, CrossRefService crossRefService)
         {
             _unpaywallService = unpaywallService;
             _localIndex = localIndex;
+            _crossRefService = crossRefService;
         }
 
         [HttpGet("search")]
@@ -73,6 +75,19 @@ namespace InsightHub.ArticleFetcher.Controllers
             return Ok(result);
         }
 
-      
+        [HttpGet("crossref")]
+        public async Task<ActionResult<List<CrossRefDto>>> CrossRefSearch([FromQuery] string query)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                return BadRequest("Query is required");
+
+            var results = await _crossRefService.SearchDoisAsync(query);
+
+            if (!results.Any())
+                return NotFound("No results from CrossRef.");
+
+            return Ok(results);
+        }
+
     }
 }
