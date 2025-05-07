@@ -11,24 +11,48 @@ namespace InsightHub.ArticleFetcher.Controllers
     public class ArticleController : ControllerBase
     {
         private readonly UnpaywallService _unpaywallService;
+        private readonly LocalArticleIndex _localIndex;
 
-        public ArticleController(UnpaywallService unpaywallService)
+        public ArticleController(UnpaywallService unpaywallService, LocalArticleIndex localIndex)
         {
             _unpaywallService = unpaywallService;
+            _localIndex = localIndex;
         }
 
         [HttpGet("search")]
-        public async Task<ActionResult<ArticleDto>> Search([FromQuery] string query)
+        public async Task<ActionResult<List<ArticleDto>>> Search([FromQuery] string query)
         {
             if (string.IsNullOrWhiteSpace(query))
-                return BadRequest("Query is required.");
+                return BadRequest("Query is required");
 
-            var result = await _unpaywallService.GetRawArticlesAsync(query);
+            var dois = _localIndex.SearchDois(query);
 
-            if (result == null)
-                return NotFound("No article found or failed to fetch.");
+            if (!dois.Any())
+                return NotFound("No articles matched yours earch");
 
-            return Ok(result);
+            var results = new List<ArticleDto>();
+
+            foreach (var doi in dois)
+            {
+                var detailed = await _unpaywallService.GetArticleByDoiAsync(doi);
+
+                if (detailed != null)
+                {
+                    var dto = new ArticleDto
+                    {
+                        Title = detailed.Title,
+                        Authors = detailed.Authors,
+                        Year = detailed.Year,
+                        Publisher = detailed.Publisher,
+                        Doi = detailed.Doi,
+                        LandingPageUrl = detailed.LandingPageUrl
+                    };
+
+                    results.Add(dto);
+                }
+            }
+
+            return Ok(results);
         }
 
         [HttpGet("{doi}")]
@@ -48,5 +72,7 @@ namespace InsightHub.ArticleFetcher.Controllers
 
             return Ok(result);
         }
+
+      
     }
 }
