@@ -16,6 +16,8 @@ namespace InsightHub.ArticleFetcher
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpClient<UnpaywallService>();
+            builder.Services.AddSingleton<LocalArticleIndex>();
+
 
             var app = builder.Build();
 
