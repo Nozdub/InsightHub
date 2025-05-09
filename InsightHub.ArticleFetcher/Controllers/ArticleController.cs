@@ -60,7 +60,7 @@ namespace InsightHub.ArticleFetcher.Controllers
         [HttpGet("{doi}")]
         public async Task<ActionResult<DetailedArticleDto>> GetByDoi(string doi)
         {
-      
+
 
             if (string.IsNullOrWhiteSpace(doi))
                 return BadRequest("DOI  is required");
@@ -90,18 +90,22 @@ namespace InsightHub.ArticleFetcher.Controllers
         }
 
         [HttpGet("crossref/full")]
-        public async Task<ActionResult<List<CrossRefDto>>> CrossRefWithUnpaywall([FromQuery] string query)
+        public async Task<ActionResult<List<CrossRefDto>>> CrossRefFullSearch(
+            [FromQuery] string query,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 5)
         {
             if (string.IsNullOrWhiteSpace(query))
                 return BadRequest("Query is required");
 
-            var results = await _crossRefService.SearchAndEnrichWithUnpaywallAsync(query);
+            var results = await _crossRefService.SearchAndEnrichWithUnpaywallAsync(query, page, pageSize);
 
             if (!results.Any())
-                return NotFound("No results from CrossRef or Unpaywall.");
+                return NotFound("No results from CrossRef.");
 
             return Ok(results);
-        }
 
+               
+        }
     }
 }

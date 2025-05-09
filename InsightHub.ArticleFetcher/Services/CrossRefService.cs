@@ -22,6 +22,10 @@ namespace InsightHub.ArticleFetcher.Services
                 return new List<CrossRefDto>();
 
             var content = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("=== Raw CrossRef JSON (SearchDoisAsync) ===");
+            Console.WriteLine(content);
+            Console.WriteLine("===========================================");
+
             var data = JsonSerializer.Deserialize<CrossRefResponse>(content);
 
             if (data?.message?.items == null)
@@ -38,15 +42,20 @@ namespace InsightHub.ArticleFetcher.Services
                 .ToList();
             }
 
-        public async Task<List<CrossRefDto>> SearchAndEnrichWithUnpaywallAsync(string query)
+        public async Task<List<CrossRefDto>> SearchAndEnrichWithUnpaywallAsync(string query, int page, int pageSize)
         {
-            var url = $"https://api.crossref.org/works?query={Uri.EscapeDataString(query)}&rows=5";
+            int offset = (page - 1) * pageSize;
+            var url = $"https://api.crossref.org/works?query={Uri.EscapeDataString(query)}&rows={pageSize}&offset={offset}";
             var response = await _httpClient.GetAsync(url);
 
             if (!response.IsSuccessStatusCode)
                 return new List<CrossRefDto>();
 
             var content = await response.Content.ReadAsStringAsync();
+            Console.WriteLine("=== Raw CrossRef JSON ===");
+            Console.WriteLine(content);
+            Console.WriteLine("=========================");
+
             var data = JsonSerializer.Deserialize<CrossRefResponse>(content);
 
             if (data?.message?.items == null)
@@ -64,7 +73,14 @@ namespace InsightHub.ArticleFetcher.Services
                     Year = item.published?.dateParts?.FirstOrDefault()?.FirstOrDefault() ?? 0
                 };
 
-                // Fetch Unpaywall data
+                //  Log missing metadata (like null year or authors)
+                if (dto.Year == null || dto.Authors == null || !dto.Authors.Any())
+                {
+                    Console.WriteLine($"[INFO] DOI {dto.Doi} has missing data: " +
+                        $"{(dto.Year == null ? "Year " : "")}" +
+                        $"{(dto.Authors == null || !dto.Authors.Any() ? "Authors" : "")}");
+                }
+
                 if (!string.IsNullOrWhiteSpace(dto.Doi))
                 {
                     var unpaywallUrl = $"https://api.unpaywall.org/v2/{dto.Doi}?email=mytrados@gmail.com";
@@ -73,6 +89,9 @@ namespace InsightHub.ArticleFetcher.Services
                     if (unpaywallResp.IsSuccessStatusCode)
                     {
                         var unpaywallContent = await unpaywallResp.Content.ReadAsStringAsync();
+                        Console.WriteLine($"=== Unpaywall JSON for DOI {dto.Doi} ===");
+                        Console.WriteLine(unpaywallContent);
+                        Console.WriteLine("========================================");
                         var unpaywallData = JsonSerializer.Deserialize<UnpaywallResponse>(unpaywallContent);
 
                         if (unpaywallData?.BestOALocation != null)
@@ -89,6 +108,7 @@ namespace InsightHub.ArticleFetcher.Services
 
             return results;
         }
+
 
 
 
