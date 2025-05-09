@@ -15,9 +15,11 @@ namespace InsightHub.ArticleFetcher
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddHttpClient<UnpaywallService>();
             builder.Services.AddSingleton<LocalArticleIndex>();
-            builder.Services.AddHttpClient<CrossRefService>();
+            builder.Services.AddHttpClient<SemanticScholarService>(client =>
+            {
+                client.DefaultRequestHeaders.Add("User-Agent", "InsightHub/1.0 (mytrados@gmail.com)");
+            });
             builder.Services.AddCors(options =>
             {
                 options.AddDefaultPolicy(policy =>
@@ -44,8 +46,15 @@ namespace InsightHub.ArticleFetcher
 
             app.UseAuthorization();
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
 
             app.MapControllers();
+
+            // Fallback to index.html for React SPA
+            app.MapFallbackToFile("index.html");
+
 
             app.Run();
         }
