@@ -5,7 +5,28 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InsightHub.ArticleFetcher", "InsightHub.ArticleFetcher\InsightHub.ArticleFetcher.csproj", "{F3836687-CF06-4D6B-810A-FAAC7049F9C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InsightHub.Tests", "InsightHub.Tests\InsightHub.Tests.csproj", "{44A494C7-E9D7-4C3B-B9CB-A703AFA2B7FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InsightHub.Tests", "InsightHub.Tests\InsightHub.Tests.csproj", "{44A494C7-E9D7-4C3B-B9CB-A703AFA2B7FB}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "insighthub-ui", "insighthub-ui\", "{9EF6BE4E-3DB4-4609-90F1-5FC64A20A55F}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_64465"
+		Debug.AspNetCompiler.PhysicalPath = "insighthub-ui\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_64465\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_64465"
+		Release.AspNetCompiler.PhysicalPath = "insighthub-ui\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_64465\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "64465"
+		SlnRelativePath = "insighthub-ui\"
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +42,10 @@ Global
 		{44A494C7-E9D7-4C3B-B9CB-A703AFA2B7FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44A494C7-E9D7-4C3B-B9CB-A703AFA2B7FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44A494C7-E9D7-4C3B-B9CB-A703AFA2B7FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EF6BE4E-3DB4-4609-90F1-5FC64A20A55F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EF6BE4E-3DB4-4609-90F1-5FC64A20A55F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EF6BE4E-3DB4-4609-90F1-5FC64A20A55F}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EF6BE4E-3DB4-4609-90F1-5FC64A20A55F}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,121 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #b2b2b2;
+}
+
+.header {
+    background-color: #388FD5;
+    text-align: center;
+    padding: 2rem 0 1rem;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+}
+
+    .header h1 {
+        margin: 0;
+        font-size: 3rem;
+        font-weight: 700;
+    }
+
+    .header p {
+        margin: 0.5rem 0 0;
+        font-size: 1.2rem;
+        color: #e8f0fa;
+    }
+
+.container {
+    display: flex;
+    padding: 1rem 5%;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.sidebar {
+    width: 15%;
+    background-color: white;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+}
+    .sidebar h3 {
+        text-align: center;
+        margin-top: 0;
+    }
+
+.main-content {
+    width: 70%;
+}
+.search-bar-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+    width: 100%;
+}
+
+.search-bar {
+    display: flex;
+    max-width: 59%;
+    width: 100%;
+}
+
+    .search-bar input {
+        flex: 1;
+        padding: 0.5rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 20px 0 0 20px;
+        padding-left: 1rem;
+    }
+
+    .search-bar button {
+        padding: 0.5rem 1.5rem;
+        font-size: 1rem;
+        background-color: #1e90ff;
+        color: white;
+        border: none;
+        border-radius: 0 20px 20px 0;
+        cursor: pointer;
+    }
+
+        .search-bar button:hover {
+            background-color: #2171b5;
+        }
+
+.article-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 4px rgba(0,0,0,0.1);
+}
+
+    .article-table th,
+    .article-table td {
+        padding: 0.75rem 1rem;
+        text-align: left;
+    }
+
+    .article-table th {
+        background-color: #2f8dd6;
+        color: white;
+        font-weight: 600;
+    }
+
+.article-row:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.article-row:nth-child(odd) {
+    background-color: #e6e6e6;
+}
+
+.article-row:hover {
+    background-color: #cce6ff;
+}
+
+.favorite-checkbox {
+    transform: scale(1.2);
+}
