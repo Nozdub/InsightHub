@@ -7,11 +7,14 @@ function App() {
     const [favorites, setFavorites] = useState([]);
     const [searchHistory, setSearchHistory] = useState([]);
     const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 20;
 
     const handleSearch = () => {
         if (!query.trim()) return;
 
         setSearchHistory((prev) => [query, ...prev.filter((q) => q !== query)]);
+        setCurrentPage(1); // reset to first page on new search
 
         fetch(`/api/Article/semantic?query=${encodeURIComponent(query)}`)
             .then((res) => res.json())
@@ -46,6 +49,12 @@ function App() {
         setArticles(sorted);
     };
 
+    // Pagination helpers
+    const indexOfLast = currentPage * itemsPerPage;
+    const indexOfFirst = indexOfLast - itemsPerPage;
+    const currentItems = articles.slice(indexOfFirst, indexOfLast);
+    const totalPages = Math.ceil(articles.length / itemsPerPage);
+
     return (
         <div>
             <div className="header">
@@ -53,7 +62,6 @@ function App() {
                 <p className="subtitle">Unlock your curiosity, search for scientific articles here</p>
             </div>
 
-            {/* 👇 Move the search bar outside the container so everything below lines up */}
             <div className="search-bar-wrapper">
                 <div className="search-bar">
                     <input
@@ -61,7 +69,7 @@ function App() {
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
                         onKeyDown={(e) => {
-                            if (e.key === 'Enter') handleSearch();
+                            if (e.key === "Enter") handleSearch();
                         }}
                         placeholder="Search for articles..."
                     />
@@ -91,7 +99,7 @@ function App() {
                             </tr>
                         </thead>
                         <tbody>
-                            {articles.map((article, idx) => (
+                            {currentItems.map((article, idx) => (
                                 <tr key={idx} className={`article-row ${idx % 2 === 0 ? "even" : "odd"}`}>
                                     <td>{article.title}</td>
                                     <td>{article.authors?.join(", ")}</td>
@@ -108,6 +116,18 @@ function App() {
                             ))}
                         </tbody>
                     </table>
+
+                    {articles.length > itemsPerPage && (
+                        <div className="pagination-controls">
+                            <button onClick={() => setCurrentPage(p => Math.max(p - 1, 1))} disabled={currentPage === 1}>
+                                Previous
+                            </button>
+                            <span>Page {currentPage} of {totalPages}</span>
+                            <button onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))} disabled={currentPage === totalPages}>
+                                Next
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 <div className="sidebar">
