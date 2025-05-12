@@ -14,7 +14,8 @@ namespace InsightHub.ArticleFetcher.Services
 
         public async Task<List<BasicArticleDto>> SearchAsync(string query)
         {
-            var requestUrl = $"https://api.semanticscholar.org/graph/v1/paper/search?query={query}&limit=10&fields=title,authors,year,venue";
+            var requestUrl = $"https://api.semanticscholar.org/graph/v1/paper/search?query={query}&limit=50&fields=title,authors,year,venue,url";
+
 
             var response = await _httpClient.GetAsync(requestUrl);
 
@@ -60,7 +61,8 @@ namespace InsightHub.ArticleFetcher.Services
                     Title = paper.Title ?? "Untitled",
                     Authors = paper.Authors?.Select(a => a.Name).ToList() ?? new List<string>(),
                     Year = paper.Year ?? 0,
-                    Publisher = paper.Venue ?? ""
+                    Publisher = paper.Venue ?? "",
+                    LandingPageUrl = paper.Url
                 })
                 .ToList();
         }
