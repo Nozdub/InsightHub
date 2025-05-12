@@ -9,17 +9,22 @@ function App() {
     const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 20;
+    const [loading, setLoading] = useState(false);
 
     const handleSearch = () => {
         if (!query.trim()) return;
 
+        setLoading(true);
         setSearchHistory((prev) => [query, ...prev.filter((q) => q !== query)]);
-        setCurrentPage(1); // reset to first page on new search
 
-        fetch(`/api/Article/semantic?query=${encodeURIComponent(query)}`)
+        fetch(`/api/Article/semantic?query=${encodeURIComponent(query)}&limit=50`)
             .then((res) => res.json())
-            .then((data) => setArticles(data))
-            .catch((err) => console.error("Error fetching articles:", err));
+            .then((data) => {
+                setArticles(data);
+                setCurrentPage(1);
+            })
+            .catch((err) => console.error("Error fetching articles:", err))
+            .finally(() => setLoading(false));
     };
 
     const toggleFavorite = (title) => {
@@ -49,7 +54,6 @@ function App() {
         setArticles(sorted);
     };
 
-    // Pagination helpers
     const indexOfLast = currentPage * itemsPerPage;
     const indexOfFirst = indexOfLast - itemsPerPage;
     const currentItems = articles.slice(indexOfFirst, indexOfLast);
@@ -88,45 +92,51 @@ function App() {
                 </div>
 
                 <div className="main-content">
-                    <table className="article-table">
-                        <thead>
-                            <tr>
-                                <th onClick={() => handleSort("title")} style={{ cursor: "pointer" }}>Title</th>
-                                <th onClick={() => handleSort("authors")} style={{ cursor: "pointer" }}>Authors</th>
-                                <th onClick={() => handleSort("year")} style={{ cursor: "pointer" }}>Year</th>
-                                <th onClick={() => handleSort("publisher")} style={{ cursor: "pointer" }}>Publisher</th>
-                                <th>Favourited</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {currentItems.map((article, idx) => (
-                                <tr key={idx} className={`article-row ${idx % 2 === 0 ? "even" : "odd"}`}>
-                                    <td>{article.title}</td>
-                                    <td>{article.authors?.join(", ")}</td>
-                                    <td>{article.year}</td>
-                                    <td>{article.publisher}</td>
-                                    <td>
-                                        <input
-                                            type="checkbox"
-                                            checked={favorites.includes(article.title)}
-                                            onChange={() => toggleFavorite(article.title)}
-                                        />
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    {loading && <div className="loading-spinner"></div>}
 
-                    {articles.length > itemsPerPage && (
-                        <div className="pagination-controls">
-                            <button onClick={() => setCurrentPage(p => Math.max(p - 1, 1))} disabled={currentPage === 1}>
-                                Previous
-                            </button>
-                            <span>Page {currentPage} of {totalPages}</span>
-                            <button onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))} disabled={currentPage === totalPages}>
-                                Next
-                            </button>
-                        </div>
+                    {!loading && (
+                        <>
+                            <table className="article-table">
+                                <thead>
+                                    <tr>
+                                        <th onClick={() => handleSort("title")} style={{ cursor: "pointer" }}>Title</th>
+                                        <th onClick={() => handleSort("authors")} style={{ cursor: "pointer" }}>Authors</th>
+                                        <th onClick={() => handleSort("year")} style={{ cursor: "pointer" }}>Year</th>
+                                        <th onClick={() => handleSort("publisher")} style={{ cursor: "pointer" }}>Publisher</th>
+                                        <th>Favourited</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {currentItems.map((article, idx) => (
+                                        <tr key={idx} className={`article-row ${idx % 2 === 0 ? "even" : "odd"}`}>
+                                            <td>{article.title}</td>
+                                            <td>{article.authors?.join(", ")}</td>
+                                            <td>{article.year}</td>
+                                            <td>{article.publisher}</td>
+                                            <td>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={favorites.includes(article.title)}
+                                                    onChange={() => toggleFavorite(article.title)}
+                                                />
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+
+                            {articles.length > itemsPerPage && (
+                                <div className="pagination-controls">
+                                    <button onClick={() => setCurrentPage(p => Math.max(p - 1, 1))} disabled={currentPage === 1}>
+                                        Previous
+                                    </button>
+                                    <span>Page {currentPage} of {totalPages}</span>
+                                    <button onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))} disabled={currentPage === totalPages}>
+                                        Next
+                                    </button>
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
 
