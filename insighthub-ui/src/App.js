@@ -21,7 +21,7 @@ function App() {
             .then((res) => res.json())
             .then((data) => {
                 setArticles(data);
-                setCurrentPage(1);
+                setCurrentPage(1); // reset pagination
             })
             .catch((err) => console.error("Error fetching articles:", err))
             .finally(() => setLoading(false));
@@ -92,9 +92,9 @@ function App() {
                 </div>
 
                 <div className="main-content">
-                    {loading && <div className="loading-spinner"></div>}
-
-                    {!loading && (
+                    {loading ? (
+                        <div className="loading-spinner" />
+                    ) : (
                         <>
                             <table className="article-table">
                                 <thead>
@@ -103,6 +103,7 @@ function App() {
                                         <th onClick={() => handleSort("authors")} style={{ cursor: "pointer" }}>Authors</th>
                                         <th onClick={() => handleSort("year")} style={{ cursor: "pointer" }}>Year</th>
                                         <th onClick={() => handleSort("publisher")} style={{ cursor: "pointer" }}>Publisher</th>
+                                        <th>Link</th>
                                         <th>Favourited</th>
                                     </tr>
                                 </thead>
@@ -113,6 +114,11 @@ function App() {
                                             <td>{article.authors?.join(", ")}</td>
                                             <td>{article.year}</td>
                                             <td>{article.publisher}</td>
+                                            <td>{article.landingPageUrl ? (
+                                                <a href={article.landingPageUrl} target="_blank" rel="noopener noreferrer">
+                                                    View Article
+                                                </a>
+                                            ) : "N/A"}</td>
                                             <td>
                                                 <input
                                                     type="checkbox"

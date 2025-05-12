@@ -7,6 +7,8 @@
         public int Year { get; set; }
         public string Publisher { get; set; }
 
+        public string? LandingPageUrl { get; set; }
+
 
 
     }

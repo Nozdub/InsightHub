@@ -22,6 +22,10 @@ namespace InsightHub.ArticleFetcher.Models
 
         [JsonPropertyName("venue")]
         public string Venue { get; set; }
+
+        [JsonPropertyName("url")]
+        public string? Url { get; set; } 
+
     }
 
     public class Author
