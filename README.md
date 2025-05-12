@@ -92,8 +92,6 @@ No further configuration is needed.
 
 ## 📌 To Do
 
-- [ ] Add pagination (20 per page)
-- [ ] Make rows clickable to reveal Semantic Scholar links (if available)
 - [ ] Add persistent localStorage for favorites
 - [ ] Mobile responsiveness
 - [ ] Export citations in BibTeX or APA format
