@@ -1,11 +1,11 @@
-# InsightHub 🧠  
+# InsightHub  
 _Academic article search made simple._
 
 InsightHub is a full-stack web application that allows users to search for scientific articles using the Semantic Scholar API. Users can sort, favorite, and revisit previous search queries — a lightweight research assistant at your fingertips.
 
 ---
 
-## 🔧 Tech Stack
+##  Tech Stack
 
 - **Frontend**: React (Create React App)
 - **Backend**: ASP.NET Core 8 Web API
@@ -13,7 +13,7 @@ InsightHub is a full-stack web application that allows users to search for scien
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 InsightHub/
@@ -32,7 +32,7 @@ InsightHub/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### 1. Backend (.NET API)
 
@@ -77,29 +77,20 @@ No further configuration is needed.
 
 ---
 
-## ✨ Features
+##  Features
 
-- 🔍 Search articles by topic
-- 🧾 Results include: title, author(s), year, and publisher
-- ⭐ Favorite articles with a checkbox
-- 🕘 View and reuse recent searches
-- ↕ Sort by title, author, year, or publisher
-- ⌨️ Press Enter to search
-- 📜 Clean, accessible layout styled in Figma
-- 🔄 Pagination (planned): 20 results per page
-
----
-
-## 📌 To Do
-
-- [ ] Add persistent localStorage for favorites
-- [ ] Mobile responsiveness
-- [ ] Export citations in BibTeX or APA format
-- [ ] Dark mode toggle
+- Search articles by topic
+- Results include: title, author(s), year, and publisher
+- Favorite articles with a checkbox
+- View and reuse recent searches
+- Sort by title, author, year, or publisher
+- Press Enter to search
+- Clean, accessible layout styled in Figma
+- Pagination (planned): 20 results per page
 
 ---
 
-## 🧪 Development Notes
+## Development Notes
 
 ### Recommended VS Code Extensions (for React work):
 - ESLint
