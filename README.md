@@ -77,12 +77,14 @@ No further configuration is needed.
 
 ---
 
-##  Features
+##  Features WiP
 
 - Search articles by topic
 - Results include: title, author(s), year, and publisher
-- Favorite articles with a checkbox
-- View and reuse recent searches
+- Profile setup inlcuding:
+    - Favorite articles with a checkbox
+    - Prefered referencing style
+    - View and reuse recent searches
 - Sort by title, author, year, or publisher
 - Press Enter to search
 - Clean, accessible layout styled in Figma
