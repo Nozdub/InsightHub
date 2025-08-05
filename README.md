@@ -13,24 +13,6 @@ InsightHub is a full-stack web application that allows users to search for scien
 
 ---
 
-##  Project Structure
-
-```
-InsightHub/
-├── InsightHub.ArticleFetcher/     # ASP.NET Core backend
-│   ├── Controllers/
-│   ├── Services/
-│   └── Models/
-├── insighthub-ui/                 # React frontend
-│   ├── public/
-│   └── src/
-│       ├── App.js
-│       ├── App.css
-│       └── ...
-└── README.md
-```
-
----
 
 ##  Getting Started
 
@@ -80,13 +62,12 @@ No further configuration is needed.
 ##  Features WiP
 
 - Search articles by topic
-- Results include: title, author(s), year, and publisher
+- Results include: title, author(s), year, publisher and source to article
 - Profile setup inlcuding:
     - Favorite articles with a checkbox
     - Prefered referencing style
     - View and reuse recent searches
 - Sort by title, author, year, or publisher
-- Press Enter to search
 - Clean, accessible layout styled in Figma
 - Pagination (planned): 20 results per page
 
