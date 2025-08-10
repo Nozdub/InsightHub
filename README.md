@@ -70,6 +70,7 @@ No further configuration is needed.
 - Sort by title, author, year, or publisher
 - Clean, accessible layout styled in Figma
 - Pagination (planned): 20 results per page
+    - Potentially consider auto loading instead of pagination?
 
 ---
 
